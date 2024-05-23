@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D 5e Character Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <h1>Character Manager</h1>
+        <div class="character">
+            <label for="name">Name:</label>
+            <input type="text" id="name" placeholder="Character Name">
+        </div>
+        <div class="character">
+            <label for="class">Class:</label>
+            <input type="text" id="class" placeholder="Character Class">
+        </div>
+        <div class="character">
+            <label for="level">Level:</label>
+            <input type="number" id="level" placeholder="Character Level">
+        </div>
+        <div class="character">
+            <label for="hp">Hit Points:</label>
+            <input type="number" id="hp" placeholder="Hit Points">
+        </div>
+        <div class="character">
+            <label for="stats">Stats:</label>
+            <div class="stats">
+                <input type="number" id="str" placeholder="STR">
+                <input type="number" id="dex" placeholder="DEX">
+                <input type="number" id="con" placeholder="CON">
+                <input type="number" id="int" placeholder="INT">
+                <input type="number" id="wis" placeholder="WIS">
+                <input type="number" id="cha" placeholder="CHA">
+            </div>
+        </div>
+        <div class="character">
+            <label for="saves">Saving Throw Proficiencies:</label>
+            <div class="saves">
+                <label><input type="checkbox" id="str_save"> STR</label>
+                <label><input type="checkbox" id="dex_save"> DEX</label>
+                <label><input type="checkbox" id="con_save"> CON</label>
+                <label><input type="checkbox" id="int_save"> INT</label>
+                <label><input type="checkbox" id="wis_save"> WIS</label>
+                <label><input type="checkbox" id="cha_save"> CHA</label>
+            </div>
+        </div>
+        <div class="character">
+            <label for="skills">Skill Proficiencies:</label>
+            <div class="skills">
+                <label><input type="checkbox" id="acrobatics"> Acrobatics</label>
+                <label><input type="checkbox" id="animal_handling"> Animal Handling</label>
+                <label><input type="checkbox" id="arcana"> Arcana</label>
+                <label><input type="checkbox" id="athletics"> Athletics</label>
+                <label><input type="checkbox" id="deception"> Deception</label>
+                <label><input type="checkbox" id="history"> History</label>
+                <label><input type="checkbox" id="insight"> Insight</label>
+                <label><input type="checkbox" id="intimidation"> Intimidation</label>
+                <label><input type="checkbox" id="investigation"> Investigation</label>
+                <label><input type="checkbox" id="medicine"> Medicine</label>
+                <label><input type="checkbox" id="nature"> Nature</label>
+                <label><input type="checkbox" id="perception"> Perception</label>
+                <label><input type="checkbox" id="performance"> Performance</label>
+                <label><input type="checkbox" id="persuasion"> Persuasion</label>
+                <label><input type="checkbox" id="religion"> Religion</label>
+                <label><input type="checkbox" id="sleight_of_hand"> Sleight of Hand</label>
+                <label><input type="checkbox" id="stealth"> Stealth</label>
+                <label><input type="checkbox" id="survival"> Survival</label>
+            </div>
+        </div>
+        <div class="character">
+            <label for="inventory">Inventory:</label>
+            <textarea id="inventory" placeholder="List your items..."></textarea>
+        </div>
+        <div class="character">
+            <label for="spells">Spells:</label>
+            <textarea id="spells" placeholder="List your spells..."></textarea>
+        </div>
+        <button id="saveBtn">Save</button>
+        <button id="loadBtn">Load</button>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
