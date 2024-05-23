@@ -10,45 +10,60 @@
     <div id="app">
         <h1>Character Manager</h1>
         <div class="character">
-            <label for="name">Name:</label>
+            <label for="name">Name</label>
             <input type="text" id="name" placeholder="Character Name">
         </div>
         <div class="character">
-            <label for="class">Class:</label>
+            <label for="class">Class</label>
             <input type="text" id="class" placeholder="Character Class">
         </div>
         <div class="character">
-            <label for="level">Level:</label>
+            <label for="level">Level</label>
             <input type="number" id="level" placeholder="Character Level">
         </div>
         <div class="character">
-            <label for="hp">Hit Points:</label>
-            <input type="number" id="hp" placeholder="Hit Points">
+            <div class="hp-row">
+                <label>HP <input type="number" id="current_hp" placeholder="Current HP"> / <input type="number" id="max_hp" placeholder="Max HP"></label>
+                <label>HD <input type="text" id="hit_dice" placeholder="Hit Dice (e.g., 5d8)"></label>
+                <label>AC <input type="number" id="ac" placeholder="AC"></label>
+            </div>
         </div>
         <div class="character">
-            <label for="stats">Stats:</label>
             <div class="stats">
-                <input type="number" id="str" placeholder="STR">
-                <input type="number" id="dex" placeholder="DEX">
-                <input type="number" id="con" placeholder="CON">
-                <input type="number" id="int" placeholder="INT">
-                <input type="number" id="wis" placeholder="WIS">
-                <input type="number" id="cha" placeholder="CHA">
+                <div class="stat-row">
+                    <label>STR</label>
+                    <input type="number" id="str">
+                    <input type="checkbox" id="str_save">
+                </div>
+                <div class="stat-row">
+                    <label>DEX</label>
+                    <input type="number" id="dex">
+                    <input type="checkbox" id="dex_save">
+                </div>
+                <div class="stat-row">
+                    <label>CON</label>
+                    <input type="number" id="con">
+                    <input type="checkbox" id="con_save">
+                </div>
+                <div class="stat-row">
+                    <label>INT</label>
+                    <input type="number" id="int">
+                    <input type="checkbox" id="int_save">
+                </div>
+                <div class="stat-row">
+                    <label>WIS</label>
+                    <input type="number" id="wis">
+                    <input type="checkbox" id="wis_save">
+                </div>
+                <div class="stat-row">
+                    <label>CHA</label>
+                    <input type="number" id="cha">
+                    <input type="checkbox" id="cha_save">
+                </div>
             </div>
         </div>
         <div class="character">
-            <label for="saves">Saving Throw Proficiencies:</label>
-            <div class="saves">
-                <label><input type="checkbox" id="str_save"> STR</label>
-                <label><input type="checkbox" id="dex_save"> DEX</label>
-                <label><input type="checkbox" id="con_save"> CON</label>
-                <label><input type="checkbox" id="int_save"> INT</label>
-                <label><input type="checkbox" id="wis_save"> WIS</label>
-                <label><input type="checkbox" id="cha_save"> CHA</label>
-            </div>
-        </div>
-        <div class="character">
-            <label for="skills">Skill Proficiencies:</label>
+            <label for="skills">Skill Proficiencies</label>
             <div class="skills">
                 <label><input type="checkbox" id="acrobatics"> Acrobatics</label>
                 <label><input type="checkbox" id="animal_handling"> Animal Handling</label>
@@ -71,17 +86,45 @@
             </div>
         </div>
         <div class="character">
-            <label for="inventory">Inventory:</label>
+            <label for="abilities">Abilities</label>
+            <button id="addAbilityBtn">Add Ability</button>
+            <div id="abilitiesList"></div>
+        </div>
+        <div class="character">
+            <label for="inventory">Inventory</label>
             <textarea id="inventory" placeholder="List your items..."></textarea>
         </div>
         <div class="character">
-            <label for="spells">Spells:</label>
+            <label for="spells">Spells</label>
             <textarea id="spells" placeholder="List your spells..."></textarea>
         </div>
+        <button id="editBtn">Edit</button>
         <button id="saveBtn">Save</button>
         <button id="loadBtn">Load</button>
     </div>
+
+    <!-- Modal for adding abilities -->
+    <div id="abilityModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Ability</h2>
+            <label for="abilityTitle">Title</label>
+            <input type="text" id="abilityTitle" placeholder="Ability Title">
+            <label for="abilityDescription">Description</label>
+            <textarea id="abilityDescription" placeholder="Ability Description"></textarea>
+            <button id="confirmAddAbility">Add Ability</button>
+        </div>
+    </div>
+
+    <!-- Modal for selecting and deleting characters -->
+    <div id="characterModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Select Character</h2>
+            <ul id="characterList"></ul>
+        </div>
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
-

@@ -1,11 +1,38 @@
+document.getElementById('editBtn').addEventListener('click', toggleEditMode);
 document.getElementById('saveBtn').addEventListener('click', saveCharacter);
-document.getElementById('loadBtn').addEventListener('click', loadCharacter);
+document.getElementById('loadBtn').addEventListener('click', openCharacterModal);
+document.getElementById('addAbilityBtn').addEventListener('click', openAbilityModal);
+document.getElementById('confirmAddAbility').addEventListener('click', addAbility);
+document.querySelectorAll('.close').forEach(el => el.addEventListener('click', closeModal));
+window.addEventListener('click', function(event) {
+    if (event.target.classList.contains('modal')) {
+        closeModal();
+    }
+});
+
+let editMode = false;
+let abilities = [];
+
+function toggleEditMode() {
+    editMode = !editMode;
+    const fields = document.querySelectorAll('input[type="text"], input[type="number"], textarea, input[type="checkbox"]');
+    fields.forEach(field => {
+        if (field.id !== 'current_hp') {
+            field.disabled = !editMode;
+        }
+    });
+
+    document.getElementById('editBtn').textContent = editMode ? 'Lock' : 'Edit';
+}
 
 function saveCharacter() {
     const name = document.getElementById('name').value;
     const className = document.getElementById('class').value;
     const level = document.getElementById('level').value;
-    const hp = document.getElementById('hp').value;
+    const max_hp = document.getElementById('max_hp').value;
+    const current_hp = document.getElementById('current_hp').value;
+    const ac = document.getElementById('ac').value;
+    const hit_dice = document.getElementById('hit_dice').value;
     const stats = {
         str: document.getElementById('str').value,
         dex: document.getElementById('dex').value,
@@ -42,6 +69,7 @@ function saveCharacter() {
         stealth: document.getElementById('stealth').checked,
         survival: document.getElementById('survival').checked
     };
+    const abilities = JSON.stringify(getAbilitiesFromDOM());
     const inventory = document.getElementById('inventory').value;
     const spells = document.getElementById('spells').value;
 
@@ -49,26 +77,72 @@ function saveCharacter() {
         name,
         className,
         level,
-        hp,
+        max_hp,
+        current_hp,
+        ac,
+        hit_dice,
         stats,
         saves,
         skills,
+        abilities,
         inventory,
         spells
     };
 
-    localStorage.setItem('character', JSON.stringify(character));
+    localStorage.setItem('character_' + name, JSON.stringify(character));
     alert('Character saved!');
 }
 
-function loadCharacter() {
-    const character = JSON.parse(localStorage.getItem('character'));
+function openCharacterModal() {
+    const characterModal = document.getElementById('characterModal');
+    characterModal.style.display = 'block';
+    renderCharacterList();
+}
+
+function renderCharacterList() {
+    const characterList = document.getElementById('characterList');
+    characterList.innerHTML = '';
+
+    Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('character_')) {
+            const characterName = key.replace('character_', '');
+            const listItem = document.createElement('li');
+
+            const loadButton = document.createElement('button');
+            loadButton.className = 'character-button';
+            loadButton.textContent = characterName;
+            loadButton.addEventListener('click', () => loadCharacter(characterName));
+
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'delete-button';
+            deleteButton.textContent = 'Delete';
+            deleteButton.addEventListener('click', () => deleteCharacter(characterName));
+
+            listItem.appendChild(loadButton);
+            listItem.appendChild(deleteButton);
+            characterList.appendChild(listItem);
+        }
+    });
+}
+
+function deleteCharacter(characterName) {
+    if (confirm(`Are you sure you want to delete ${characterName}?`)) {
+        localStorage.removeItem('character_' + characterName);
+        renderCharacterList();
+    }
+}
+
+function loadCharacter(characterName) {
+    const character = JSON.parse(localStorage.getItem('character_' + characterName));
 
     if (character) {
         document.getElementById('name').value = character.name;
         document.getElementById('class').value = character.className;
         document.getElementById('level').value = character.level;
-        document.getElementById('hp').value = character.hp;
+        document.getElementById('max_hp').value = character.max_hp;
+        document.getElementById('current_hp').value = character.current_hp;
+        document.getElementById('ac').value = character.ac;
+        document.getElementById('hit_dice').value = character.hit_dice;
         document.getElementById('str').value = character.stats.str;
         document.getElementById('dex').value = character.stats.dex;
         document.getElementById('con').value = character.stats.con;
@@ -99,10 +173,69 @@ function loadCharacter() {
         document.getElementById('sleight_of_hand').checked = character.skills.sleight_of_hand;
         document.getElementById('stealth').checked = character.skills.stealth;
         document.getElementById('survival').checked = character.skills.survival;
-        document.getElementById('inventory').value = character.inventory;
-        document.getElementById('spells').value = character.spells;
+        loadAbilitiesFromString(character.abilities);
+        toggleEditMode(); // Apply initial state of fields
+        closeModal();
         alert('Character loaded!');
     } else {
         alert('No character found!');
     }
+}
+
+function openAbilityModal() {
+    document.getElementById('abilityModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.querySelectorAll('.modal').forEach(modal => modal.style.display = 'none');
+}
+
+function addAbility() {
+    const title = document.getElementById('abilityTitle').value;
+    const description = document.getElementById('abilityDescription').value;
+
+    if (title && description) {
+        const ability = { title, description };
+        abilities.push(ability);
+        renderAbilities();
+        closeModal();
+    } else {
+        alert('Please enter both title and description.');
+    }
+}
+
+function renderAbilities() {
+    const abilitiesList = document.getElementById('abilitiesList');
+    abilitiesList.innerHTML = '';
+    abilities.forEach((ability, index) => {
+        const abilityButton = document.createElement('button');
+        abilityButton.className = 'ability-button';
+        abilityButton.textContent = ability.title;
+        abilityButton.onclick = () => viewAbility(index);
+        abilitiesList.appendChild(abilityButton);
+    });
+}
+
+function viewAbility(index) {
+    const ability = abilities[index];
+    const description = prompt(`Description of ${ability.title}:`, ability.description);
+    if (description === null) return;
+    if (description === '') {
+        if (confirm('Do you want to delete this ability?')) {
+            abilities.splice(index, 1);
+            renderAbilities();
+        }
+    } else {
+        ability.description = description;
+        renderAbilities();
+    }
+}
+
+function loadAbilitiesFromString(abilitiesString) {
+    abilities = JSON.parse(abilitiesString);
+    renderAbilities();
+}
+
+function getAbilitiesFromDOM() {
+    return abilities;
 }

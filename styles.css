@@ -50,12 +50,163 @@ button:last-of-type {
     margin-right: 0;
 }
 
-.stats input {
-    width: 48%;
+.hp-row {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 10px;
 }
 
-.saves label, .skills label {
+.hp-row label {
+    display: flex;
+    align-items: center;
+    width: 40%;
+}
+
+.hp-row label:nth-child(2) {
+    width: 25%;
+}
+
+.hp-row label:nth-child(3) {
+    width: 25%;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.stat-row label {
+    width: 50px; /* Ensure all labels have the same width */
+}
+
+.stat-row input[type="number"] {
+    width: calc(100% - 60px); /* Adjust input width accordingly */
+    margin-right: 5px;
+}
+
+.stat-row input[type="checkbox"] {
+    margin-left: 5px;
+}
+
+.skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.skills label {
+    flex: 1 1 calc(33.33% - 10px);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.skills input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+/* New styles for modal and ability buttons */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.ability-button {
+    background-color: #ccc;
+    border: none;
+    color: black;
+    padding: 10px;
+    text-align: center;
     display: block;
+    width: 100%;
     margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.ability-button:hover {
+    background-color: #bbb;
+}
+
+#characterList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#characterList li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.character-button {
+    background-color: #ccc;
+    border: none;
+    color: black;
+    padding: 10px;
+    text-align: center;
+    display: block;
+    width: 70%;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.character-button:hover {
+    background-color: #bbb;
+}
+
+.delete-button {
+    background-color: #d9534f;
+    border: none;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: #c9302c;
 }
