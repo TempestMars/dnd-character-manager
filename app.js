@@ -3,6 +3,12 @@ document.getElementById('saveBtn').addEventListener('click', saveCharacter);
 document.getElementById('loadBtn').addEventListener('click', openCharacterModal);
 document.getElementById('addAbilityBtn').addEventListener('click', openAbilityModal);
 document.getElementById('confirmAddAbility').addEventListener('click', addAbility);
+document.getElementById('addSpellBtn').addEventListener('click', openSpellModal);
+document.getElementById('confirmAddSpell').addEventListener('click', addSpell);
+document.getElementById('deleteAbilityBtn').addEventListener('click', deleteAbility);
+document.getElementById('saveAbilityBtn').addEventListener('click', saveAbilityChanges);
+document.getElementById('deleteSpellBtn').addEventListener('click', deleteSpell);
+document.getElementById('saveSpellBtn').addEventListener('click', saveSpellChanges);
 document.querySelectorAll('.close').forEach(el => el.addEventListener('click', closeModal));
 window.addEventListener('click', function(event) {
     if (event.target.classList.contains('modal')) {
@@ -12,6 +18,9 @@ window.addEventListener('click', function(event) {
 
 let editMode = false;
 let abilities = [];
+let spells = [];
+let currentAbilityIndex = null;
+let currentSpellIndex = null;
 
 function toggleEditMode() {
     editMode = !editMode;
@@ -70,8 +79,8 @@ function saveCharacter() {
         survival: document.getElementById('survival').checked
     };
     const abilities = JSON.stringify(getAbilitiesFromDOM());
+    const spells = JSON.stringify(getSpellsFromDOM());
     const inventory = document.getElementById('inventory').value;
-    const spells = document.getElementById('spells').value;
 
     const character = {
         name,
@@ -85,8 +94,8 @@ function saveCharacter() {
         saves,
         skills,
         abilities,
-        inventory,
-        spells
+        spells,
+        inventory
     };
 
     localStorage.setItem('character_' + name, JSON.stringify(character));
@@ -174,6 +183,7 @@ function loadCharacter(characterName) {
         document.getElementById('stealth').checked = character.skills.stealth;
         document.getElementById('survival').checked = character.skills.survival;
         loadAbilitiesFromString(character.abilities);
+        loadSpellsFromString(character.spells);
         toggleEditMode(); // Apply initial state of fields
         closeModal();
         alert('Character loaded!');
@@ -184,6 +194,10 @@ function loadCharacter(characterName) {
 
 function openAbilityModal() {
     document.getElementById('abilityModal').style.display = 'block';
+}
+
+function openSpellModal() {
+    document.getElementById('spellModal').style.display = 'block';
 }
 
 function closeModal() {
@@ -204,6 +218,21 @@ function addAbility() {
     }
 }
 
+function addSpell() {
+    const level = document.getElementById('spellLevel').value;
+    const name = document.getElementById('spellName').value;
+    const description = document.getElementById('spellDescription').value;
+
+    if (level && name && description) {
+        const spell = { level: parseInt(level), name, description };
+        spells.push(spell);
+        renderSpells();
+        closeModal();
+    } else {
+        alert('Please enter level, name, and description.');
+    }
+}
+
 function renderAbilities() {
     const abilitiesList = document.getElementById('abilitiesList');
     abilitiesList.innerHTML = '';
@@ -216,18 +245,65 @@ function renderAbilities() {
     });
 }
 
+function renderSpells() {
+    const spellsList = document.getElementById('spellsList');
+    spellsList.innerHTML = '';
+    const sortedSpells = spells.sort((a, b) => a.level - b.level);
+    sortedSpells.forEach((spell, index) => {
+        const spellButton = document.createElement('button');
+        spellButton.className = 'ability-button';
+        spellButton.textContent = `Level ${spell.level}: ${spell.name}`;
+        spellButton.onclick = () => viewSpell(index);
+        spellsList.appendChild(spellButton);
+    });
+}
+
 function viewAbility(index) {
+    currentAbilityIndex = index;
     const ability = abilities[index];
-    const description = prompt(`Description of ${ability.title}:`, ability.description);
-    if (description === null) return;
-    if (description === '') {
-        if (confirm('Do you want to delete this ability?')) {
-            abilities.splice(index, 1);
-            renderAbilities();
-        }
-    } else {
-        ability.description = description;
+    document.getElementById('viewAbilityTitle').value = ability.title;
+    document.getElementById('viewAbilityDescription').value = ability.description;
+    document.getElementById('viewAbilityModal').style.display = 'block';
+}
+
+function viewSpell(index) {
+    currentSpellIndex = index;
+    const spell = spells[index];
+    document.getElementById('viewSpellLevel').value = spell.level;
+    document.getElementById('viewSpellName').value = spell.name;
+    document.getElementById('viewSpellDescription').value = spell.description;
+    document.getElementById('viewSpellModal').style.display = 'block';
+}
+
+function deleteAbility() {
+    if (currentAbilityIndex !== null && confirm('Do you want to delete this ability?')) {
+        abilities.splice(currentAbilityIndex, 1);
         renderAbilities();
+        closeModal();
+    }
+}
+
+function saveAbilityChanges() {
+    if (currentAbilityIndex !== null) {
+        abilities[currentAbilityIndex].description = document.getElementById('viewAbilityDescription').value;
+        renderAbilities();
+        closeModal();
+    }
+}
+
+function deleteSpell() {
+    if (currentSpellIndex !== null && confirm('Do you want to delete this spell?')) {
+        spells.splice(currentSpellIndex, 1);
+        renderSpells();
+        closeModal();
+    }
+}
+
+function saveSpellChanges() {
+    if (currentSpellIndex !== null) {
+        spells[currentSpellIndex].description = document.getElementById('viewSpellDescription').value;
+        renderSpells();
+        closeModal();
     }
 }
 
@@ -236,6 +312,15 @@ function loadAbilitiesFromString(abilitiesString) {
     renderAbilities();
 }
 
+function loadSpellsFromString(spellsString) {
+    spells = JSON.parse(spellsString);
+    renderSpells();
+}
+
 function getAbilitiesFromDOM() {
     return abilities;
+}
+
+function getSpellsFromDOM() {
+    return spells;
 }

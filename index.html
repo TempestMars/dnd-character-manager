@@ -91,12 +91,9 @@
             <div id="abilitiesList"></div>
         </div>
         <div class="character">
-            <label for="inventory">Inventory</label>
-            <textarea id="inventory" placeholder="List your items..."></textarea>
-        </div>
-        <div class="character">
             <label for="spells">Spells</label>
-            <textarea id="spells" placeholder="List your spells..."></textarea>
+            <button id="addSpellBtn">Add Spell</button>
+            <div id="spellsList"></div>
         </div>
         <button id="editBtn">Edit</button>
         <button id="saveBtn">Save</button>
@@ -113,6 +110,51 @@
             <label for="abilityDescription">Description</label>
             <textarea id="abilityDescription" placeholder="Ability Description"></textarea>
             <button id="confirmAddAbility">Add Ability</button>
+        </div>
+    </div>
+
+    <!-- Modal for viewing and editing abilities -->
+    <div id="viewAbilityModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Ability Details</h2>
+            <label for="viewAbilityTitle">Title</label>
+            <input type="text" id="viewAbilityTitle" disabled>
+            <label for="viewAbilityDescription">Description</label>
+            <textarea id="viewAbilityDescription"></textarea>
+            <button id="deleteAbilityBtn">Delete Ability</button>
+            <button id="saveAbilityBtn">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- Modal for adding spells -->
+    <div id="spellModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Spell</h2>
+            <label for="spellLevel">Level</label>
+            <input type="number" id="spellLevel" placeholder="Spell Level">
+            <label for="spellName">Name</label>
+            <input type="text" id="spellName" placeholder="Spell Name">
+            <label for="spellDescription">Description</label>
+            <textarea id="spellDescription" placeholder="Spell Description"></textarea>
+            <button id="confirmAddSpell">Add Spell</button>
+        </div>
+    </div>
+
+    <!-- Modal for viewing and editing spells -->
+    <div id="viewSpellModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Spell Details</h2>
+            <label for="viewSpellLevel">Level</label>
+            <input type="number" id="viewSpellLevel" disabled>
+            <label for="viewSpellName">Name</label>
+            <input type="text" id="viewSpellName" disabled>
+            <label for="viewSpellDescription">Description</label>
+            <textarea id="viewSpellDescription"></textarea>
+            <button id="deleteSpellBtn">Delete Spell</button>
+            <button id="saveSpellBtn">Save Changes</button>
         </div>
     </div>
 
